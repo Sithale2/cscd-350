@@ -4,18 +4,15 @@ import cs350s22.component.ui.parser.A_ParserHelper;
 import cs350s22.component.ui.parser.Parser;
 import cs350s22.component.ui.parser.ParserHelper;
 
-//=================================================================================================================================================================================
 public class Startup
 {
    private final A_ParserHelper _parserHelper = new ParserHelper();
    
-   // -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
    public Startup()
    {
-      System.out.println("Welcome to your Startup class");
+      System.out.println("STARTUP");
    }
 
-   // -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
    public static void main(final String[] arguments) throws Exception
    {
       Startup startup = new Startup();
@@ -27,7 +24,6 @@ public class Startup
       startup.parse("@exit");
    }
    
-   // -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
    private void parse(final String parse) throws Exception
    {
       System.out.println("PARSE> "+ parse);
