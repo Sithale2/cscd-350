@@ -2,6 +2,10 @@ package cs350s22.component.ui.parser;
 
 import java.io.*;
 import java.util.*;
+
+import cs350s22.component.sensor.mapper.A_Mapper;
+import cs350s22.component.sensor.reporter.A_Reporter;
+import cs350s22.component.sensor.watchdog.A_Watchdog;
 import cs350s22.support.*;
 import cs350s22.test.MySensor;
 
@@ -136,12 +140,18 @@ public class Parser{
 	
 	public void createSensor(String input)
 	{
-		String output = null;
+		List<Identifier> groups = null;
+		List<A_Reporter> reporters = null;
+		List<A_Watchdog> watchdogs = null;
+		A_Mapper map = null;
+		boolean cons3 = false;
+		
 		//Split off leading term into 2-slot array
 		String[] splitArray = input.split(" ", 0);
 	    String sensorType = splitArray[0];
 	    Identifier sensorName = Identifier.make(splitArray[1]);
 	    
+	    //Base constructor with only id
 	    if(splitArray.length == 2)
 	    {
 	    	MySensor s = new MySensor(sensorName);
@@ -150,14 +160,90 @@ public class Parser{
 	    
 	    else
 	    {
-	    	/*
-	    		Split up the command with the uppercase words.
-	    		You don't have to save those values into a list. All you
-	    		have to do is use them in the different Sensor constructors.
-	    		Groups, Reporters, Watchdogs, and Mappers are all optional.
-	    	*/
-	    }
+	    	for(int i = 3;i < splitArray.length; i ++)
+	    	{
+	    		if(splitArray[i] == "MAPPER")
+	    			cons3 = true;
+	    	}
 	    	
+	    	
+	    	for(int i = 3;i < splitArray.length; i ++)
+	    	{
+	    		
+	    		if(splitArray[i] == "GROUP")
+	    		{
+	    			int j = i+1;
+	    			while(splitArray[j] != "REPORTERS"
+	    					&& splitArray[j] != "WATCHDOGS"
+	    					&& splitArray[j] != "MAPPER")
+	    			{
+	    				Identifier val = Identifier.make(splitArray[j]);
+	    				groups.add(val);
+	    				j ++;
+	    			}
+	    		}
+	    		
+	    		if(splitArray[i] == "REPORTERS")
+	    		{
+	    			int j = i+1;
+	    			while(splitArray[j] != "GROUP"
+	    					&& splitArray[j] != "WATCHDOGS"
+	    					&& splitArray[j] != "MAPPER")
+	    			{
+	    				//Build a reporter object list
+	    				//Or check to see if they already exist?
+	    				Identifier val = Identifier.make(splitArray[j]);
+						//A_Reporter val = A_Reporter.make(splitArray[j]);
+	    				//reporters.add(val);
+	    				symbolTable.get(val);
+	    				
+	    				j ++;
+	    			}
+	    		}
+	    		
+	    		if(splitArray[i] == "WATCHDOGS")
+	    		{
+	    			int j = i+1;
+	    			while(splitArray[j] != "GROUP"
+	    					&& splitArray[j] != "WATCHDOGS"
+	    					&& splitArray[j] != "MAPPER")
+	    			{
+	    				//Build a watchdog object list
+	    				//Or check to see if they already exist?
+	    				Identifier val = Identifier.make(splitArray[j]);
+	    				//A_Watchdog val = A_Reporter.make(splitArray[j]);
+	    				//watchdogs.add(val);
+	    				j ++;
+	    			}
+	    		}
+	    		
+	    		if(splitArray[i] == "MAPPER")
+	    		{
+	    			int j = i+1;
+	    			while(splitArray[j] != "GROUP"
+	    					&& splitArray[j] != "WATCHDOGS"
+	    					&& splitArray[j] != "REPORTERS")
+	    			{
+	    				//Build a Mapper object
+	    				
+	    				//map = splitArray[j];	?
+	    				j ++;
+	    			}
+	    		}
+	    		
+	    		if(cons3 != true)
+	    		{
+	    			MySensor s = new MySensor(sensorName, groups, reporters, watchdogs);
+	    		}
+	    		else
+	    		{
+	    			MySensor s = new MySensor(sensorName, groups, reporters, watchdogs, map);
+	    		}
+	    	}
+	    	
+	    }
+	    
+	    //Constructor that doesn't include Mapper
 	    	
 	    //GROUP myGroup1 myGroup2 myGroup3
 	    
