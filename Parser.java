@@ -3,6 +3,7 @@ package cs350s22.component.ui.parser;
 import java.io.*;
 import java.util.*;
 
+import cs350s22.component.A_Component;
 import cs350s22.component.sensor.A_Sensor;
 import cs350s22.component.sensor.mapper.A_Mapper;
 import cs350s22.component.sensor.mapper.MapperEquation;
@@ -27,6 +28,10 @@ import cs350s22.component.sensor.watchdog.mode.A_WatchdogMode;
 import cs350s22.component.sensor.watchdog.mode.WatchdogModeAverage;
 import cs350s22.component.sensor.watchdog.mode.WatchdogModeInstantaneous;
 import cs350s22.component.sensor.watchdog.mode.WatchdogModeStandardDeviation;
+import cs350s22.component.ui.CommandLineInterface;
+import cs350s22.message.A_Message;
+import cs350s22.message.actuator.MessageActuatorRequestPosition;
+import cs350s22.message.ping.MessagePing;
 import cs350s22.support.*;
 import cs350s22.test.ActuatorPrototype;
 import cs350s22.test.MySensor;
@@ -35,6 +40,8 @@ public class Parser{
 	//Variable List
 	public A_ParserHelper parserHelper;
 	public String commandText;
+	
+	private String[] tokens;
 	
 	//CONSTRUCTORS
 	public Parser(A_ParserHelper parserHelper, String commandText){
@@ -106,7 +113,7 @@ public class Parser{
 			//CODE HERE
 		}
 		if(parserCheck.equals("BUILD")){
-			//CODE HERE
+			buildNetwork(output);
 		}
 	}
 
@@ -920,15 +927,18 @@ public class Parser{
 		}
 		
 		//Get Group List + Sensor List
-		for(int i = 2; i < sensorSlot; i++) {
-			myGroup = Identifier.make(splitArray[i]);
-			actuatorGroups.add(myGroup);
-		}
-		for(int i = sensorSlot + 1; i < accelSlot; i++) {
-			Identifier val = Identifier.make(splitArray[i]);
-			
-			mySensor = parserHelper.getSymbolTableSensor().get(val);
-			sensorGroups.add(mySensor);
+		if(sensorSlot != 0) //fix this logic!
+		{
+			for(int i = 2; i < sensorSlot; i++) {
+				myGroup = Identifier.make(splitArray[i]);
+				actuatorGroups.add(myGroup);
+			}
+			for(int i = sensorSlot + 1; i < accelSlot; i++) {
+				Identifier val = Identifier.make(splitArray[i]);
+				
+				mySensor = parserHelper.getSymbolTableSensor().get(val);
+				sensorGroups.add(mySensor);
+			}
 		}
 		
 		ActuatorPrototype a = new ActuatorPrototype(actuatorName, actuatorGroups, accelLeadin, accelLeadout, accelRelax, velocityLimit, initValue, minValue, maxValue, jerkLimit, sensorGroups);
@@ -992,5 +1002,138 @@ public class Parser{
 	//id   EQUATION       SCALE              value
 	//id   EQUATION       NORMALIZE          value1       value2
 	//id   INTERPOLATION  (LINEAR | SPLINE)  DEFINITION   string
+	
+//--------------------------------------------------------------------------------------
+	
+	public void sendMessage(Scanner sc)
+    {
+	 	ArrayList<Identifier> id = new ArrayList<Identifier>();
+		ArrayList<Identifier> group = new ArrayList<Identifier>();
+        ArrayList<Identifier> currList = new ArrayList<Identifier>();
+    	
+        
+		System.out.println("SENDING MESSAGE...");
+        
+        CommandLineInterface cli = parserHelper.getCommandLineInterface();
+        
+        if(tokens[2].matches("PING")) {
+        	
+        	System.out.println("SENDING PING");
+        	
+        	MessagePing ping = new MessagePing();
+        	cli.issueMessage(ping);
+        	parserHelper.getCommandLineInterface().issueMessage(ping);
+        	
+        }
+        else if(tokens[tokens.length-2].matches("REQUEST")) {
+
+
+		String curr = "";
+		
+
+		while(sc.hasNext()) {
+			curr = sc.next(); 
+
+			if(curr.equals("ID") || curr.equals("IDS")) {
+				currList = id;
+				
+			}
+			 
+			else if(curr.equals("GROUP") || curr.equals("GROUPS")) {
+				currList = group; 
+				
+			}
+
+			else if(curr.equals("POSITION")) {
+				break; 
+				
+			}
+
+			else {
+				
+				currList.add(Identifier.make(curr)); 
+				
+			}
+		 }
+        }
+        else if(tokens[tokens.length-1].matches("REPORT")) {
+
+		boolean isRequest = (sc.next().equals("REQUEST"));
+		double value = 0; 
+		
+
+		if(sc.hasNextDouble()) {
+			value = sc.nextDouble();
+		}
+		ArrayList<Identifier> listOutput; 
+		listOutput = (id.size() > 0) ? id : group; 
+
+		
+		if(!isRequest) {
+			if(id.size() > 0) {
+			//get message from actuator	
+				cli.issueMessage(new MessageActuatorRequestPosition(id, value)); 
+				
+			}
+			if(group.size() > 0) {
+				A_Message message = new MessageActuatorRequestPosition(id, value);
+				cli.issueMessage(message);
+			}
+			
+		}
+		else {
+			if(id.size() > 0) {
+
+				A_Message message = new MessageActuatorRequestPosition(id, value);
+				cli.issueMessage(message);
+			}
+			if(group.size() > 0) {
+
+				A_Message message = new MessageActuatorRequestPosition(group, value, 0);
+				cli.issueMessage(message);
+			}
+			
+			
+		}
+      }
+    }
+	
+//--------------------------------------------------------------------------------------
+	
+	public void buildNetwork(String input) {
+		//Split input string as usual
+		String[] splitArray = input.split(" ", 0);
+		
+		//Variable List
+		Identifier myName = null; 		//Identifier.make("input");
+		A_Component newPiece = null;
+		
+		//Iterate through input array
+		for(int i = 0; i < splitArray.length; i++) {
+			if(splitArray[i].equals("COMPONENT") || splitArray[i].equals("COMPONENTS")) {
+				for(int j = i+1; j < splitArray.length; j++) {
+					//Make an Identifier out of the term
+					myName = Identifier.make(splitArray[j]);
+
+					//Figure out what type of piece is needed, then get it
+					if(parserHelper.getSymbolTableController().contains(myName) == true){
+						newPiece = parserHelper.getSymbolTableController().get(myName);
+					}
+					else if(parserHelper.getSymbolTableActuator().contains(myName) == true){
+						newPiece = parserHelper.getSymbolTableActuator().get(myName);
+					}
+
+					else if(parserHelper.getSymbolTableSensor().contains(myName) == true){
+						newPiece = parserHelper.getSymbolTableSensor().get(myName);
+					}
+					//Add to ControllerMaster
+					parserHelper.getControllerMaster().addComponent(newPiece);
+				}
+			}
+		}
+		
+		parserHelper.getNetwork().writeOutput();
+		
+	}
 	
 }//end class
