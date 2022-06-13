@@ -149,26 +149,27 @@ public class Parser{
 	  		//Insert Code Here
 	  		createSensor(output);
 	  	}
-	  	else if(parserCheck.equals("WATCHDOG")) {
+	  	else if(parserCheck.equals("WATCHDOG") || parserCheck.equals("WATCHDOGS")) {
 	  		//Insert Code Here
 	  		String[] splitSub = output.split(" ", 2);
-	  		if(splitSub[0] == "ACCELERATION")
+	  		
+	  		if(splitSub[0].equals("ACCELERATION"))
 	  		{
 	  			createWatchdogAcceleration(splitSub[1]);
 	  		}
-	  		else if(splitSub[0] == "BAND")
+	  		else if(splitSub[0].equals("BAND"))
 	  		{
 	  			createWatchdogBand(splitSub[1]);
 	  		}
-	  		else if(splitSub[0] == "NOTCH")
+	  		else if(splitSub[0].equals("NOTCH"))
 	  		{
 	  			createWatchdogNotch(splitSub[1]);
 	  		}
-	  		else if(splitSub[0] == "LOW")
+	  		else if(splitSub[0].equals("LOW"))
 	  		{
 	  			createWatchdogLow(splitSub[1]);
 	  		}
-	  		else if(splitSub[0] == "HIGH")
+	  		else if(splitSub[0].equals("HIGH"))
 	  		{
 	  			createWatchdogHigh(splitSub[1]);
 	  		}
@@ -212,10 +213,12 @@ public class Parser{
 			{
 				i ++;
 				i ++;
+				i ++;
 				low = Double.parseDouble(splitArray[i]);
 				i ++;
+				i ++;
 				high = Double.parseDouble(splitArray[i]);
-				if(splitArray[i + 1].equals("GRACE"))
+				if(i + 1 < splitArray.length)
 				{
 					grace = Integer.parseInt(splitArray[i + 2]);
 					
@@ -225,12 +228,14 @@ public class Parser{
 					parserHelper.getSymbolTableWatchdog().add(watchdogName, w);
 					System.out.println("Watchdog Added to Table");
 				}
-				
-				A_WatchdogMode mode = new WatchdogModeInstantaneous();
-				WatchdogAcceleration w = new WatchdogAcceleration(low, high, mode);
-				System.out.println("Watchdog Created");
-				parserHelper.getSymbolTableWatchdog().add(watchdogName, w);
-				System.out.println("Watchdog Added to Table");
+				else
+				{
+					A_WatchdogMode mode = new WatchdogModeInstantaneous();
+					WatchdogAcceleration w = new WatchdogAcceleration(low, high, mode);
+					System.out.println("Watchdog Created");
+					parserHelper.getSymbolTableWatchdog().add(watchdogName, w);
+					System.out.println("Watchdog Added to Table");
+				}
 			}
 			else if(splitArray[i].equals("AVERAGE"))
 			{
@@ -242,11 +247,13 @@ public class Parser{
 				
 				i ++;
 				i ++;
+				i ++;
 				low = Double.parseDouble(splitArray[i]);
+				i ++;
 				i ++;
 				high = Double.parseDouble(splitArray[i]);
 				
-				if(splitArray[i + 1].equals("GRACE"))
+				if(i + 1 < splitArray.length)
 				{
 					grace = Integer.parseInt(splitArray[i + 2]);
 					
@@ -257,11 +264,14 @@ public class Parser{
 					System.out.println("Watchdog Added to Table");
 				}
 				
-				A_WatchdogMode mode = new WatchdogModeAverage(average);
-				WatchdogAcceleration w = new WatchdogAcceleration(low, high, mode);
-				System.out.println("Watchdog Created");
-				parserHelper.getSymbolTableWatchdog().add(watchdogName, w);
-				System.out.println("Watchdog Added to Table");
+				else
+				{
+					A_WatchdogMode mode = new WatchdogModeAverage(average);
+					WatchdogAcceleration w = new WatchdogAcceleration(low, high, mode);
+					System.out.println("Watchdog Created");
+					parserHelper.getSymbolTableWatchdog().add(watchdogName, w);
+					System.out.println("Watchdog Added to Table");
+				}
 			}
 			else if(splitArray[i].equals("STANDARD") && splitArray[i+1].equals("DEVIATION"))
 			{
@@ -275,10 +285,13 @@ public class Parser{
 				
 				i ++;
 				i ++;
+				i ++;
+				i ++;
 				low = Double.parseDouble(splitArray[i]);
 				i ++;
+				i ++;
 				high = Double.parseDouble(splitArray[i]);
-				if(splitArray[i + 1].equals("GRACE"))
+				if(i + 1 < splitArray.length)
 				{
 					grace = Integer.parseInt(splitArray[i + 2]);
 					
@@ -289,11 +302,14 @@ public class Parser{
 					System.out.println("Watchdog Added to Table");
 				}
 				
-				A_WatchdogMode mode = new WatchdogModeStandardDeviation(standardDev);
-				WatchdogAcceleration w = new WatchdogAcceleration(low, high, mode);
-				System.out.println("Watchdog Created");
-				parserHelper.getSymbolTableWatchdog().add(watchdogName, w);
-				System.out.println("Watchdog Added to Table");
+				else
+				{
+					A_WatchdogMode mode = new WatchdogModeStandardDeviation(standardDev);
+					WatchdogAcceleration w = new WatchdogAcceleration(low, high, mode);
+					System.out.println("Watchdog Created");
+					parserHelper.getSymbolTableWatchdog().add(watchdogName, w);
+					System.out.println("Watchdog Added to Table");
+				}
 			}
 		}
 		
@@ -318,10 +334,12 @@ public class Parser{
 			{
 				i ++;
 				i ++;
+				i ++;
 				low = Double.parseDouble(splitArray[i]);
 				i ++;
+				i ++;
 				high = Double.parseDouble(splitArray[i]);
-				if(splitArray[i + 1].equals("GRACE"))
+				if(i + 1 < splitArray.length)
 				{
 					grace = Integer.parseInt(splitArray[i + 2]);
 					
@@ -331,12 +349,14 @@ public class Parser{
 					parserHelper.getSymbolTableWatchdog().add(watchdogName, w);
 					System.out.println("Watchdog Added to Table");
 				}
-				
-				A_WatchdogMode mode = new WatchdogModeInstantaneous();
-				WatchdogBand w = new WatchdogBand(low, high, mode);
-				System.out.println("Watchdog Created");
-				parserHelper.getSymbolTableWatchdog().add(watchdogName, w);
-				System.out.println("Watchdog Added to Table");
+				else
+				{
+					A_WatchdogMode mode = new WatchdogModeInstantaneous();
+					WatchdogBand w = new WatchdogBand(low, high, mode);
+					System.out.println("Watchdog Created");
+					parserHelper.getSymbolTableWatchdog().add(watchdogName, w);
+					System.out.println("Watchdog Added to Table");
+				}
 			}
 			else if(splitArray[i].equals("AVERAGE"))
 			{
@@ -347,10 +367,12 @@ public class Parser{
 				}
 				i ++;
 				i ++;
+				i ++;
 				low = Double.parseDouble(splitArray[i]);
 				i ++;
+				i ++;
 				high = Double.parseDouble(splitArray[i]);
-				if(splitArray[i + 1].equals("GRACE"))
+				if(i + 1 < splitArray.length)
 				{
 					grace = Integer.parseInt(splitArray[i + 2]);
 					
@@ -361,11 +383,14 @@ public class Parser{
 					System.out.println("Watchdog Added to Table");
 				}
 				
-				A_WatchdogMode mode = new WatchdogModeAverage(average);
-				WatchdogBand w = new WatchdogBand(low, high, mode);
-				System.out.println("Watchdog Created");
-				parserHelper.getSymbolTableWatchdog().add(watchdogName, w);
-				System.out.println("Watchdog Added to Table");
+				else
+				{
+					A_WatchdogMode mode = new WatchdogModeAverage(average);
+					WatchdogBand w = new WatchdogBand(low, high, mode);
+					System.out.println("Watchdog Created");
+					parserHelper.getSymbolTableWatchdog().add(watchdogName, w);
+					System.out.println("Watchdog Added to Table");
+				}
 			}
 			else if(splitArray[i].equals("STANDARD") && splitArray[i+1].equals("DEVIATION"))
 			{
@@ -377,10 +402,13 @@ public class Parser{
 				}
 				i ++;
 				i ++;
+				i ++;
+				i ++;
 				low = Double.parseDouble(splitArray[i]);
 				i ++;
+				i ++;
 				high = Double.parseDouble(splitArray[i]);
-				if(splitArray[i + 1].equals("GRACE"))
+				if(i + 1 < splitArray.length)
 				{
 					grace = Integer.parseInt(splitArray[i + 2]);
 					
@@ -391,11 +419,14 @@ public class Parser{
 					System.out.println("Watchdog Added to Table");
 				}
 				
-				A_WatchdogMode mode = new WatchdogModeStandardDeviation(standardDev);
-				WatchdogBand w = new WatchdogBand(low, high, mode);
-				System.out.println("Watchdog Created");
-				parserHelper.getSymbolTableWatchdog().add(watchdogName, w);
-				System.out.println("Watchdog Added to Table");
+				else
+				{
+					A_WatchdogMode mode = new WatchdogModeStandardDeviation(standardDev);
+					WatchdogBand w = new WatchdogBand(low, high, mode);
+					System.out.println("Watchdog Created");
+					parserHelper.getSymbolTableWatchdog().add(watchdogName, w);
+					System.out.println("Watchdog Added to Table");
+				}
 			}
 		}
 	}
@@ -419,10 +450,12 @@ public class Parser{
 			{
 				i ++;
 				i ++;
+				i ++;
 				low = Double.parseDouble(splitArray[i]);
 				i ++;
+				i ++;
 				high = Double.parseDouble(splitArray[i]);
-				if(splitArray[i + 1].equals("GRACE"))
+				if(i + 1 < splitArray.length)
 				{
 					grace = Integer.parseInt(splitArray[i + 2]);
 					
@@ -433,11 +466,14 @@ public class Parser{
 					System.out.println("Watchdog Added to Table");
 				}
 				
-				A_WatchdogMode mode = new WatchdogModeInstantaneous();
-				WatchdogNotch w = new WatchdogNotch(low, high, mode);
-				System.out.println("Watchdog Created");
-				parserHelper.getSymbolTableWatchdog().add(watchdogName, w);
-				System.out.println("Watchdog Added to Table");
+				else
+				{
+					A_WatchdogMode mode = new WatchdogModeInstantaneous();
+					WatchdogNotch w = new WatchdogNotch(low, high, mode);
+					System.out.println("Watchdog Created");
+					parserHelper.getSymbolTableWatchdog().add(watchdogName, w);
+					System.out.println("Watchdog Added to Table");
+				}
 			}
 			else if(splitArray[i].equals("AVERAGE"))
 			{
@@ -448,10 +484,12 @@ public class Parser{
 				}
 				i ++;
 				i ++;
+				i ++;
 				low = Double.parseDouble(splitArray[i]);
 				i ++;
+				i ++;
 				high = Double.parseDouble(splitArray[i]);
-				if(splitArray[i + 1].equals("GRACE"))
+				if(i + 1 < splitArray.length)
 				{
 					grace = Integer.parseInt(splitArray[i + 2]);
 					
@@ -462,11 +500,14 @@ public class Parser{
 					System.out.println("Watchdog Added to Table");
 				}
 				
-				A_WatchdogMode mode = new WatchdogModeAverage(average);
-				WatchdogNotch w = new WatchdogNotch(low, high, mode);
-				System.out.println("Watchdog Created");
-				parserHelper.getSymbolTableWatchdog().add(watchdogName, w);
-				System.out.println("Watchdog Added to Table");
+				else
+				{
+					A_WatchdogMode mode = new WatchdogModeAverage(average);
+					WatchdogNotch w = new WatchdogNotch(low, high, mode);
+					System.out.println("Watchdog Created");
+					parserHelper.getSymbolTableWatchdog().add(watchdogName, w);
+					System.out.println("Watchdog Added to Table");
+				}
 			}
 			else if(splitArray[i].equals("STANDARD") && splitArray[i+1].equals("DEVIATION"))
 			{
@@ -478,10 +519,13 @@ public class Parser{
 				}
 				i ++;
 				i ++;
+				i ++;
+				i ++;
 				low = Double.parseDouble(splitArray[i]);
 				i ++;
+				i ++;
 				high = Double.parseDouble(splitArray[i]);
-				if(splitArray[i + 1].equals("GRACE"))
+				if(i + 1 < splitArray.length)
 				{
 					grace = Integer.parseInt(splitArray[i + 2]);
 					
@@ -492,11 +536,14 @@ public class Parser{
 					System.out.println("Watchdog Added to Table");
 				}
 				
-				A_WatchdogMode mode = new WatchdogModeStandardDeviation(standardDev);
-				WatchdogNotch w = new WatchdogNotch(low, high, mode);
-				System.out.println("Watchdog Created");
-				parserHelper.getSymbolTableWatchdog().add(watchdogName, w);
-				System.out.println("Watchdog Added to Table");
+				else
+				{
+					A_WatchdogMode mode = new WatchdogModeStandardDeviation(standardDev);
+					WatchdogNotch w = new WatchdogNotch(low, high, mode);
+					System.out.println("Watchdog Created");
+					parserHelper.getSymbolTableWatchdog().add(watchdogName, w);
+					System.out.println("Watchdog Added to Table");
+				}
 			}
 		}
 	}
