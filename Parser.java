@@ -208,14 +208,14 @@ public class Parser{
 		
 		for(int i = 1; i < splitArray.length; i ++)
 		{
-			if(splitArray[i] == "INSTANTANEOUS")
+			if(splitArray[i].equals("INSTANTANEOUS"))
 			{
 				i ++;
 				i ++;
 				low = Double.parseDouble(splitArray[i]);
 				i ++;
 				high = Double.parseDouble(splitArray[i]);
-				if(splitArray[i + 1] == "GRACE")
+				if(splitArray[i + 1].equals("GRACE"))
 				{
 					grace = Integer.parseInt(splitArray[i + 2]);
 					
@@ -232,9 +232,9 @@ public class Parser{
 				parserHelper.getSymbolTableWatchdog().add(watchdogName, w);
 				System.out.println("Watchdog Added to Table");
 			}
-			else if(splitArray[i] == "AVERAGE")
+			else if(splitArray[i].equals("AVERAGE"))
 			{
-				if(splitArray[i+1] != "THRESHOLD")
+				if(!splitArray[i+1].equals("THRESHOLD"))
 				{
 					average = Integer.parseInt(splitArray[i + 1]);
 					i ++;
@@ -246,7 +246,7 @@ public class Parser{
 				i ++;
 				high = Double.parseDouble(splitArray[i]);
 				
-				if(splitArray[i + 1] == "GRACE")
+				if(splitArray[i + 1].equals("GRACE"))
 				{
 					grace = Integer.parseInt(splitArray[i + 2]);
 					
@@ -263,11 +263,11 @@ public class Parser{
 				parserHelper.getSymbolTableWatchdog().add(watchdogName, w);
 				System.out.println("Watchdog Added to Table");
 			}
-			else if(splitArray[i] == "STANDARD" && splitArray[i+1] == "DEVIATION")
+			else if(splitArray[i].equals("STANDARD") && splitArray[i+1].equals("DEVIATION"))
 			{
 				i ++;
 				
-				if(splitArray[i+1] != "THRESHOLD")
+				if(!splitArray[i+1].equals("THRESHOLD"))
 				{
 					standardDev = Integer.parseInt(splitArray[i + 1]);
 					i ++;
@@ -278,7 +278,7 @@ public class Parser{
 				low = Double.parseDouble(splitArray[i]);
 				i ++;
 				high = Double.parseDouble(splitArray[i]);
-				if(splitArray[i + 1] == "GRACE")
+				if(splitArray[i + 1].equals("GRACE"))
 				{
 					grace = Integer.parseInt(splitArray[i + 2]);
 					
@@ -314,14 +314,14 @@ public class Parser{
 		
 		for(int i = 1; i < splitArray.length; i ++)
 		{
-			if(splitArray[i] == "INSTANTANEOUS")
+			if(splitArray[i].equals("INSTANTANEOUS"))
 			{
 				i ++;
 				i ++;
 				low = Double.parseDouble(splitArray[i]);
 				i ++;
 				high = Double.parseDouble(splitArray[i]);
-				if(splitArray[i + 1] == "GRACE")
+				if(splitArray[i + 1].equals("GRACE"))
 				{
 					grace = Integer.parseInt(splitArray[i + 2]);
 					
@@ -338,9 +338,9 @@ public class Parser{
 				parserHelper.getSymbolTableWatchdog().add(watchdogName, w);
 				System.out.println("Watchdog Added to Table");
 			}
-			else if(splitArray[i] == "AVERAGE")
+			else if(splitArray[i].equals("AVERAGE"))
 			{
-				if(splitArray[i+1] != "THRESHOLD")
+				if(!splitArray[i+1].equals("THRESHOLD"))
 				{
 					average = Integer.parseInt(splitArray[i + 1]);
 					i ++;
@@ -350,7 +350,7 @@ public class Parser{
 				low = Double.parseDouble(splitArray[i]);
 				i ++;
 				high = Double.parseDouble(splitArray[i]);
-				if(splitArray[i + 1] == "GRACE")
+				if(splitArray[i + 1].equals("GRACE"))
 				{
 					grace = Integer.parseInt(splitArray[i + 2]);
 					
@@ -367,10 +367,10 @@ public class Parser{
 				parserHelper.getSymbolTableWatchdog().add(watchdogName, w);
 				System.out.println("Watchdog Added to Table");
 			}
-			else if(splitArray[i] == "STANDARD" && splitArray[i+1] == "DEVIATION")
+			else if(splitArray[i].equals("STANDARD") && splitArray[i+1].equals("DEVIATION"))
 			{
 				i ++;
-				if(splitArray[i+1] != "THRESHOLD")
+				if(!splitArray[i+1].equals("THRESHOLD"))
 				{
 					standardDev = Integer.parseInt(splitArray[i + 1]);
 					i ++;
@@ -380,7 +380,7 @@ public class Parser{
 				low = Double.parseDouble(splitArray[i]);
 				i ++;
 				high = Double.parseDouble(splitArray[i]);
-				if(splitArray[i + 1] == "GRACE")
+				if(splitArray[i + 1].equals("GRACE"))
 				{
 					grace = Integer.parseInt(splitArray[i + 2]);
 					
@@ -415,14 +415,14 @@ public class Parser{
 		
 		for(int i = 1; i < splitArray.length; i ++)
 		{
-			if(splitArray[i] == "INSTANTANEOUS")
+			if(splitArray[i].equals("INSTANTANEOUS"))
 			{
 				i ++;
 				i ++;
 				low = Double.parseDouble(splitArray[i]);
 				i ++;
 				high = Double.parseDouble(splitArray[i]);
-				if(splitArray[i + 1] == "GRACE")
+				if(splitArray[i + 1].equals("GRACE"))
 				{
 					grace = Integer.parseInt(splitArray[i + 2]);
 					
@@ -439,9 +439,9 @@ public class Parser{
 				parserHelper.getSymbolTableWatchdog().add(watchdogName, w);
 				System.out.println("Watchdog Added to Table");
 			}
-			else if(splitArray[i] == "AVERAGE")
+			else if(splitArray[i].equals("AVERAGE"))
 			{
-				if(splitArray[i+1] != "THRESHOLD")
+				if(!splitArray[i+1].equals("THRESHOLD"))
 				{
 					average = Integer.parseInt(splitArray[i + 1]);
 					i ++;
@@ -451,7 +451,7 @@ public class Parser{
 				low = Double.parseDouble(splitArray[i]);
 				i ++;
 				high = Double.parseDouble(splitArray[i]);
-				if(splitArray[i + 1] == "GRACE")
+				if(splitArray[i + 1].equals("GRACE"))
 				{
 					grace = Integer.parseInt(splitArray[i + 2]);
 					
@@ -468,10 +468,10 @@ public class Parser{
 				parserHelper.getSymbolTableWatchdog().add(watchdogName, w);
 				System.out.println("Watchdog Added to Table");
 			}
-			else if(splitArray[i] == "STANDARD" && splitArray[i+1] == "DEVIATION")
+			else if(splitArray[i].equals("STANDARD") && splitArray[i+1].equals("DEVIATION"))
 			{
 				i ++;
-				if(splitArray[i+1] != "THRESHOLD")
+				if(!splitArray[i+1].equals("THRESHOLD"))
 				{
 					standardDev = Integer.parseInt(splitArray[i + 1]);
 					i ++;
@@ -481,7 +481,7 @@ public class Parser{
 				low = Double.parseDouble(splitArray[i]);
 				i ++;
 				high = Double.parseDouble(splitArray[i]);
-				if(splitArray[i + 1] == "GRACE")
+				if(splitArray[i + 1].equals("GRACE"))
 				{
 					grace = Integer.parseInt(splitArray[i + 2]);
 					
@@ -514,12 +514,12 @@ public class Parser{
 		
 		for(int i = 1; i < splitArray.length; i ++)
 		{
-			if(splitArray[i] == "INSTANTANEOUS")
+			if(splitArray[i].equals("INSTANTANEOUS"))
 			{
 				i ++;
 				threshold = Integer.parseInt(splitArray[i + 1]);
 				
-				if(splitArray[i + 1] == "GRACE")
+				if(splitArray[i + 1].equals("GRACE"))
 				{
 					grace = Integer.parseInt(splitArray[i + 2]);
 					
@@ -536,9 +536,9 @@ public class Parser{
 				parserHelper.getSymbolTableWatchdog().add(watchdogName, w);
 				System.out.println("Watchdog Added to Table");
 			}
-			if(splitArray[i] == "AVERAGE")
+			if(splitArray[i].equals("AVERAGE"))
 			{
-				if(splitArray[i + 1] != "THRESHOLD")
+				if(!splitArray[i + 1].equals("THRESHOLD"))
 				{
 					average = Integer.parseInt(splitArray[i + 1]);
 					i ++;
@@ -547,7 +547,7 @@ public class Parser{
 				i ++;
 				threshold = Integer.parseInt(splitArray[i + 1]);
 				
-				if(splitArray[i + 1] == "GRACE")
+				if(splitArray[i + 1].equals("GRACE"))
 				{
 					grace = Integer.parseInt(splitArray[i + 2]);
 					
@@ -564,10 +564,10 @@ public class Parser{
 				parserHelper.getSymbolTableWatchdog().add(watchdogName, w);
 				System.out.println("Watchdog Added to Table");
 			}
-			if(splitArray[i] == "STANDARD" && splitArray[i+1] == "DEVIATION")
+			if(splitArray[i].equals("STANDARD") && splitArray[i+1].equals("DEVIATION"))
 			{
 				i ++;
-				if(splitArray[i + 1] != "THRESHOLD")
+				if(!splitArray[i + 1].equals("THRESHOLD"))
 				{
 					standardDev = Integer.parseInt(splitArray[i + 1]);
 					i ++;
@@ -576,7 +576,7 @@ public class Parser{
 				i ++;
 				threshold = Integer.parseInt(splitArray[i + 1]);
 				
-				if(splitArray[i + 1] == "GRACE")
+				if(splitArray[i + 1].equals("GRACE"))
 				{
 					grace = Integer.parseInt(splitArray[i + 2]);
 					
@@ -609,12 +609,12 @@ public class Parser{
 		
 		for(int i = 1; i < splitArray.length; i ++)
 		{
-			if(splitArray[i] == "INSTANTANEOUS")
+			if(splitArray[i].equals("INSTANTANEOUS"))
 			{
 				i ++;
 				threshold = Integer.parseInt(splitArray[i + 1]);
 				
-				if(splitArray[i + 1] == "GRACE")
+				if(splitArray[i + 1].equals("GRACE"))
 				{
 					grace = Integer.parseInt(splitArray[i + 2]);
 					
@@ -631,9 +631,9 @@ public class Parser{
 				parserHelper.getSymbolTableWatchdog().add(watchdogName, w);
 				System.out.println("Watchdog Added to Table");
 			}
-			if(splitArray[i] == "AVERAGE")
+			if(splitArray[i].equals("AVERAGE"))
 			{
-				if(splitArray[i + 1] != "THRESHOLD")
+				if(!splitArray[i + 1].equals("THRESHOLD"))
 				{
 					average = Integer.parseInt(splitArray[i + 1]);
 					i ++;
@@ -642,7 +642,7 @@ public class Parser{
 				i ++;
 				threshold = Integer.parseInt(splitArray[i + 1]);
 				
-				if(splitArray[i + 1] == "GRACE")
+				if(splitArray[i + 1].equals("GRACE"))
 				{
 					grace = Integer.parseInt(splitArray[i + 2]);
 					
@@ -659,10 +659,10 @@ public class Parser{
 				parserHelper.getSymbolTableWatchdog().add(watchdogName, w);
 				System.out.println("Watchdog Added to Table");
 			}
-			if(splitArray[i] == "STANDARD" && splitArray[i+1] == "DEVIATION")
+			if(splitArray[i].equals("STANDARD") && splitArray[i+1].equals("DEVIATION"))
 			{
 				i ++;
-				if(splitArray[i + 1] != "THRESHOLD")
+				if(!splitArray[i + 1].equals("THRESHOLD"))
 				{
 					standardDev = Integer.parseInt(splitArray[i + 1]);
 					i ++;
@@ -671,7 +671,7 @@ public class Parser{
 				i ++;
 				threshold = Integer.parseInt(splitArray[i + 1]);
 				
-				if(splitArray[i + 1] == "GRACE")
+				if(splitArray[i + 1].equals("GRACE"))
 				{
 					grace = Integer.parseInt(splitArray[i + 2]);
 					
