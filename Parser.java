@@ -740,129 +740,65 @@ public class Parser{
 	
 //--------------------------------------------------------------------------------------
 	
-	public void createReporter(String input) 
+	public void createReporter(String input)
 	{
-		String[] splitArray = input.split(" ", 0);
-		Identifier reporterName = Identifier.make(splitArray[1]);
-		int delta = 0;
-		int frequency = 0;
+		//Variable List
+		List<Identifier> reporterIDs = new ArrayList<Identifier>();
+		List<Identifier> reporterGroups = new ArrayList<Identifier>();
+		Identifier IDname = null;
+		Identifier GroupName = null;
 		
-		List<Identifier> reporterIDs = Collections.<Identifier>emptyList();
-		List<Identifier> reporterGroups = Collections.<Identifier>emptyList();
-		int reporterIDSlot = 0;
+		int reporterValue = 0;	//This variable pulls double-duty as either Delta value OR Freq. value
+		
 		int reporterGroupSlot = 0;
-    	
+		int reporterTypeSlot = 0;
 		
-		if(splitArray[0].equals("FREQUENCY"))
-		{
-	    	for(int scan = 3; scan < splitArray.length; scan++) {
-	    		if(splitArray[scan].equals("IDS")) {
-	    			//System.out.println("Found IDS in scan");
-	    			reporterIDSlot = scan;
-	    			//System.out.println("reporter id slot = " + scan);
-	    		}
-	    		else if(splitArray[scan].equals("GROUPS")) {
-	    			//System.out.println("Found GROUPS in scan");
-	    			reporterGroupSlot = scan;
-	    			//System.out.println("reporter group slot = " + scan);
-	    		}
-	    	}
-			
-			for(int i = 3; i < splitArray.length; i++) {
-	    		if(splitArray[i].equals("IDS")) {
-	    			//System.out.println("Found IDS in maker");
-	    			/*if(reporterIDSlot != 0) {
-	    				System.out.println("got inside ID maker");
-	    				for(int j = i+1; j < reporterIDSlot; j++) {
-	    					System.out.println("IDS is " + splitArray[j]);
-	    					Identifier val = Identifier.make(splitArray[j]);
-	    					reporterIDs.add(val);
-	    					
-	    				}
-	    			}*/
-	    			i ++;
-	    			while(splitArray[i] != "GROUPS" || splitArray[i] != "FREQUENCY")
-	    			{
-	    				Identifier val = Identifier.make(splitArray[i]);
-	    				System.out.println("The ID is " + splitArray[i]);
-    					reporterIDs.add(val);
-    					i ++;
-	    			}
-	    		}
-	    		else if(splitArray[i].equals("GROUPS"))
-	    		{
-	    			//System.out.println("Found GROUPS in maker");
-	    			/*if(reporterGroupSlot != 0) {
-	    				System.out.println("got inside GROUP maker");
-	    				System.out.println("i is currently " + i);
-	    				for(int j = i+1; j < reporterGroupSlot; j++) {
-	    					System.out.println("GROUPS is " + splitArray[j]);
-	    					Identifier val = Identifier.make(splitArray[j]);
-	    					reporterGroups.add(val);
-	    					
-	    				}
-	    			}*/
-	    			i ++;
-	    			while(splitArray[i] != "IDS" || splitArray[i] != "FREQUENCY")
-	    			{
-	    				Identifier val = Identifier.make(splitArray[i]);
-    					reporterGroups.add(val);
-    					i ++;
-	    			}
-	    		}
-	    		if(splitArray[i].equals("FREQUENCY")) {	//Once we find the "FREQUENCY" term
-		   			
-	    			frequency = Integer.parseInt(splitArray[i+1]);
-					
-	    		}
+		//Split input into a searchable array
+		String[] splitArray = input.split(" ", 0);
+
+		//Name is always splitArray[1]
+		Identifier reporterName = Identifier.make(splitArray[1]);		
+		
+		//Start initial scan for slot values
+		for(int scan = 0; scan < splitArray.length; scan++) {
+			if(splitArray[scan].equals("GROUPS")) {
+				reporterGroupSlot = scan;
 			}
-			
-			ReporterFrequency r = new ReporterFrequency(reporterIDs, reporterGroups, frequency);
+			if(splitArray[scan].equals("DELTA") || splitArray[scan].equals("FREQUENCY") && scan > 3) {
+				reporterTypeSlot = scan;
+				reporterValue = Integer.parseInt(splitArray[scan + 1]); //Since we're already here, grab the value at the end
+			}
+		}
+		
+		//Second For-Loop to gather ID values and Group values
+		for(int i = 0; i < splitArray.length; i++) {
+			if(splitArray[i].equals("IDS")) {
+				for(int j = i + 1; j < reporterGroupSlot; j++) {
+					IDname = Identifier.make(splitArray[j]);
+					reporterIDs.add(IDname);
+				}
+			}
+			if(splitArray[i].equals("GROUPS")) {
+				for(int j = i + 1; j < reporterTypeSlot; j++) {
+					GroupName = Identifier.make(splitArray[j]);
+					reporterGroups.add(GroupName);
+				}
+			}
+		}
+		
+		// 0          1
+		// CHANGE     id  NOTIFY  [ids]  [groups]  DELTA      value
+		// FREQUENCY  id  NOTIFY  [ids]  [groups]  FREQUENCY  value
+
+		//Determine type of Reporter needed and call constructor
+		if(splitArray[0].equals("CHANGE")) {
+			ReporterChange r = new ReporterChange(reporterIDs, reporterGroups, reporterValue);
 			System.out.println("Reporter Created");
 			parserHelper.getSymbolTableReporter().add(reporterName, r);
 			System.out.println("Reporter Added to Table");
 		}
-		
-		else if(splitArray[0] == "CHANGE")
-		{
-			for(int scan = 3; scan < splitArray.length; scan++) {
-	    		if(splitArray[scan].equals("IDS")) {
-	    			reporterIDSlot = scan;
-	    		}
-	    		else if(splitArray[scan].equals("GROUPS")) {
-	    			reporterGroupSlot = scan;
-	    		}
-	    	}
-			
-			for(int i = 3; i < splitArray.length; i++) {
-				if(splitArray[i] == "IDS") {
-	    			
-	    			if(reporterIDSlot != 0) {
-	    				for(int j = i+1; j < reporterIDSlot; j++) {
-	    					Identifier val = Identifier.make(splitArray[j]);
-	    					reporterIDs.add(val);
-	    					
-	    				}
-	    			}
-	    		}
-	    		else if(splitArray[i] == "GROUPS")
-	    		{
-	    			if(reporterGroupSlot != 0) {
-	    				for(int j = i+1; j < reporterGroupSlot; j++) {
-	    					Identifier val = Identifier.make(splitArray[j]);
-	    					reporterGroups.add(val);
-	    					
-	    				}
-	    			}
-	    		}
-	    		if(splitArray[i] == "DELTA") {	//Once we find the "DELTA" term
-		   			
-	    			delta = Integer.parseInt(splitArray[i+1]);
-					
-	    		}
-			}
-			
-			ReporterChange r = new ReporterChange(reporterIDs, reporterGroups, delta);
+		if(splitArray[0].equals("FREQUENCY")) {
+			ReporterFrequency r = new ReporterFrequency(reporterIDs, reporterGroups, reporterValue);
 			System.out.println("Reporter Created");
 			parserHelper.getSymbolTableReporter().add(reporterName, r);
 			System.out.println("Reporter Added to Table");
@@ -888,10 +824,10 @@ public class Parser{
 	    
 	    else{
 	    	Identifier myGroup = null;
-	    	List<Identifier> sensorGroups= Collections.<Identifier>emptyList();
+	    	List<Identifier> sensorGroups= new ArrayList<Identifier>();
 	    	
-	    	List<A_Reporter> sensorReporters = Collections.<A_Reporter>emptyList();
-	    	List<A_Watchdog> sensorWatchdogs = Collections.<A_Watchdog>emptyList();
+	    	List<A_Reporter> sensorReporters = new ArrayList<A_Reporter>();
+	    	List<A_Watchdog> sensorWatchdogs = new ArrayList<A_Watchdog>();
 	    	A_Mapper sensorMapper = null;
 	    	
 	    	int reporterSlot = 0;
@@ -999,10 +935,10 @@ public class Parser{
 		//Variable List
 		String myName = null;
 		Identifier myGroup = null;
-		List<Identifier> actuatorGroups= Collections.<Identifier>emptyList();
+		List<Identifier> actuatorGroups= new ArrayList<Identifier>();
 		
     	A_Sensor mySensor = null;
-    	List<A_Sensor> sensorGroups= Collections.<A_Sensor>emptyList();
+    	List<A_Sensor> sensorGroups= new ArrayList<A_Sensor>();
     	
 		double accelLeadin = 0.0;
 		double accelLeadout = 0.0;
