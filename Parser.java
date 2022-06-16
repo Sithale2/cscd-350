@@ -41,7 +41,8 @@ import cs350s22.support.*;
 import cs350s22.test.ActuatorPrototype;
 import cs350s22.test.MySensor;
 
-public class Parser{
+public class Parser
+{
 	//Variable List
 	public A_ParserHelper parserHelper;
 	public String commandText;
@@ -126,17 +127,16 @@ public class Parser{
 			}
 		}
 		
-		if(parserCheck.equals("@EXIT"))
+		if(parserCheck.equals("@exit"))
 		{
 			this.parserHelper.exit();
-			
 		}
 		
 		if(parserCheck.equals("@RUN"))
 		{
 		    this.parserHelper.run(output);
-		    
 		}
+		
 		if(parserCheck.equals("@CONFIGURE"))
 		{
 			//CODE HERE							//Do we need to do anything? Is built-in @CONFIGURE good enough?
@@ -1263,16 +1263,16 @@ public class Parser{
         {
             switch (commandText[i])
             {
-                case "ping":
+                case "PING":
                     MessagePing ping = new MessagePing();
                     parserHelper.getCommandLineInterface().issueMessage(ping);
                     break;
-                case "id":
+                case "ID":
                     Identifier id = Identifier.make(commandText[i + 1]);
                     break;
-                case "groups":
+                case "GROUPS":
                     int count = 0;
-                    while (!commandText[i].equals("position"))
+                    while (!commandText[i].equals("POSITION"))
                     {
                         count++;
                         i++;
@@ -1283,15 +1283,15 @@ public class Parser{
                     }
                     i =5;
                     break;
-                case "position":
+                case "POSITION":
                     switch (commandText[i+1])
                     {
-                        case "request":
+                        case "REQUEST":
                             CommandLineInterface cli1 = parserHelper.getCommandLineInterface();
                             A_Message message1 = new MessageActuatorRequestPosition(groups, Integer.valueOf(commandText[i+2]));
                             cli1.issueMessage(message1);
                             break;
-                        case "report":
+                        case "REPORT":
                             CommandLineInterface cli2 = parserHelper.getCommandLineInterface();
                             A_Message message2 = new MessageActuatorRequestPosition(groups, Integer.valueOf(commandText[i+2]));
                             cli2.issueMessage(message2);
